@@ -7,17 +7,20 @@ const sequelize = new Sequelize(process.env.DB_URL, {
     dialectOptions: {
         ssl: {
             require: true,
-            rejectUnauthorized: false
-        }
-    }
+            rejectUnauthorized: false,
+        },
+    },
+    logging: false, // Disable SQL query logs
 });
 
-sequelize.authenticate()
-.then(() => {
-    console.log("Database Connected Successfully");
-})
-.catch((err) => {
-    console.error("Connection Error:", err);
-});
+// Test Database Connection
+sequelize
+    .authenticate()
+    .then(() => {
+        console.log("✅ Database Connected Successfully");
+    })
+    .catch((err) => {
+        console.error("❌ Database Connection Error:", err.message);
+    });
 
 module.exports = sequelize;

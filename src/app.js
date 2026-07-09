@@ -1,8 +1,10 @@
-const express = require('express');
-const cors = require('cors');
-const productRoutes = require('./routes/productRoutes');
-const sequelize = require('./config/database');
-require('dotenv').config();
+require("dotenv").config();
+
+const express = require("express");
+const cors = require("cors");
+
+const productRoutes = require("./routes/productRoutes");
+const sequelize = require("./config/database");
 
 const app = express();
 
@@ -12,20 +14,24 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
-app.use('/api/products', productRoutes);
+app.use("/api/products", productRoutes);
 
-// Health check
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'Server is running' });
+// Health Check Route
+app.get("/health", (req, res) => {
+    res.status(200).json({
+        success: true,
+        message: "Server is running"
+    });
 });
 
-// Error handling middleware
+// Error Handling Middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({
-    success: false,
-    message: 'Something went wrong!'
-  });
+    console.error(err.stack);
+
+    res.status(500).json({
+        success: false,
+        message: "Something went wrong!"
+    });
 });
 
 module.exports = { app, sequelize };

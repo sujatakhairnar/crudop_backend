@@ -153,3 +153,38 @@
 // // in react create a form to create a new product and display all the products in a list with delete and update buttons for each product
 
 // // sequelize ORM website to understand how to connect with database and perform CRUD operations using sequelize and postgresql database
+
+require("dotenv").config();
+
+const express = require("express");
+const cors = require("cors");
+
+const sequelize = require("./src/config/database");
+
+// Import Model
+require("./src/models/Products");
+
+// Import Routes
+const productRoutes = require("./src/routes/productRoutes");
+
+const app = express();
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+
+// Routes
+app.use("/products", productRoutes);
+
+// Database Connection
+sequelize.sync()
+    .then(() => {
+        console.log("Database Connected & Table Created Successfully");
+
+        app.listen(process.env.PORT, () => {
+            console.log(`Server Running on http://localhost:${process.env.PORT}`);
+        });
+    })
+    .catch((err) => {
+        console.error("Database Connection Error:", err);
+    });
